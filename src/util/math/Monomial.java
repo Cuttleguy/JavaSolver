@@ -1,4 +1,4 @@
-import math.Complex;
+package util.math;
 
 public class Monomial {
     public Complex coefficient;

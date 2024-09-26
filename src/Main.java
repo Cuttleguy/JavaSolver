@@ -1,8 +1,4 @@
-import math.Complex;
-import org.scilab.forge.jlatexmath.TeXConstants;
-import org.scilab.forge.jlatexmath.TeXFormula;
-import org.scilab.forge.jlatexmath.TeXIcon;
-import org.scilab.forge.jlatexmath.TeXParser;
+import util.math.Complex;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,7 +37,7 @@ public class Main {
 //        ImageIO.write(bimg, "png", out);
         Complex i = new Complex(0.0,1.0);
         Complex power = new Complex(7,0.0);
-        Monomial result = new Monomial(i,power);
+        Complex result = Complex.pow(i,i);
         System.out.println(result);
     }
 

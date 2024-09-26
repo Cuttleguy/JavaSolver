@@ -1,9 +1,12 @@
-package math;
+package util.math;
 
 public class Complex {
     public double real;
     public double imag;
-
+    public Complex(double newReal) {
+        this.real = newReal;
+        this.imag = 0.0;
+    }
     public Complex() {
         this.real = 0.0;
         this.imag = 0.0;
@@ -75,6 +78,10 @@ public class Complex {
             return Double.toString(imag)+"i";
         } else if (imag==1.0) {
             return Double.toString(real)+" + i";
+        }
+        else if(imag==-1.0)
+        {
+            return Double.toString(real)+" - i";
         } else if (imag<0.0) {
             return Double.toString(real)+" - "+Double.toString(Math.abs(imag))+"i";
         } else {
