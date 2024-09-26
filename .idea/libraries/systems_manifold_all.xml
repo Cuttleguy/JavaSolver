@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="systems.manifold.all" type="repository">
+    <properties maven-id="systems.manifold:manifold-all:2024.1.32" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/systems/manifold/manifold-all/2024.1.32/manifold-all-2024.1.32.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
