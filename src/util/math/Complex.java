@@ -3,6 +3,7 @@ package util.math;
 public class Complex {
     public double real;
     public double imag;
+    public static final Complex i = new Complex(0.0,1.0);
     public Complex(double newReal) {
         this.real = newReal;
         this.imag = 0.0;
@@ -69,6 +70,19 @@ public class Complex {
         return real==other.real && imag==other.imag;
     }
 
+    public Complex conjugate()
+    {
+        return new Complex(
+                real,-imag
+        );
+    }
+    public Complex unaryMinus()
+    {
+        return new Complex(
+                -real,-imag
+        );
+    }
+
 
     public String toString(){
         if(imag == 0.0)
@@ -89,4 +103,5 @@ public class Complex {
         }
 
     }
+
 }

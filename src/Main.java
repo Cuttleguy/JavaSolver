@@ -1,4 +1,5 @@
 import util.math.Complex;
+import util.math.Monomial;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -39,6 +40,7 @@ public class Main {
         Complex power = new Complex(7,0.0);
         Complex result = Complex.pow(i,i);
         System.out.println(result);
+        Monomial monomial = new Monomial("blah x^3");
     }
 
 
