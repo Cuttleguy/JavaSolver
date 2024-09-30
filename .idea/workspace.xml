@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="63fc2270-0094-44c7-a06f-c2353b0e867a" name="Changes" comment="Quaternions Start">
-      <change afterPath="$PROJECT_DIR$/src/util/math/Polynomial.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/util/math/Rational.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/math/Complex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Complex.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/math/Monomial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Monomial.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/math/Quaternion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Quaternion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/Polynomial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Polynomial.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,9 +41,7 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2mXWuUvik3frIyNNxMta2kjCNLa" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <OptionsSetting value="false" id="Update" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>

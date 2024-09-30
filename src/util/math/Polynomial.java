@@ -103,7 +103,7 @@ public class Polynomial {
     }
     public boolean isZero()
     {
-        Complex zero =new Complex(0.0);
+        Complex zero = new Complex(0.0);
         for(Monomial monomial:monomials)
         {
 
@@ -145,7 +145,20 @@ public class Polynomial {
         toReturn.monomials.add(other);
         return toReturn;
     }
-
+    public Polynomial rem(Polynomial other)
+    {
+        if(false){throw new ArithmeticException("Divided by zero");}
+        Polynomial q = new Polynomial();
+        Polynomial r=this;
+        int counter=0;
+        while(!r.isZero()&&r.getDegree()>=other.getDegree())
+        {
+            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),0.0);
+            q+=t;
+            r=r-other*t;
+        }
+        return q;
+    }
 
     public Polynomial plus(Polynomial other)
     {
@@ -154,6 +167,11 @@ public class Polynomial {
         toReturn.Compress();
         return toReturn;
     }
+    public boolean divisible(Polynomial other)
+    {
+        return (this%other).isZero();
+    }
+
 
 
 }

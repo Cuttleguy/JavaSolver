@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class Monomial {
     public Complex coefficient;
     public Double exponent;
+
     public Monomial(Complex newCoefficient, Double newExponent)
     {
         coefficient=newCoefficient;
