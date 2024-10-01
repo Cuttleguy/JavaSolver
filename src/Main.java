@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println(new Polynomial("3x^2"));
+        System.out.println(new Polynomial("3x^2-2"));
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 

@@ -22,28 +22,38 @@ public class Polynomial {
     }
     public Polynomial(String string)
     {
+        System.out.println("From String");
         monomials=new ArrayList<>();
-        ArrayList<String> tokens=new ArrayList<String>();
+        ArrayList<String> tokens=new ArrayList<>();
         StringBuilder tokenBuilder= new StringBuilder();
-        for (int i = 0; i < string.length(); i++){
+        for (int i = string.length()-1; i >= 0; i--){
             char c = string.charAt(i);
-            if(c=='-')
-            {
-                tokens.add("-"+tokenBuilder);
-                tokenBuilder=new StringBuilder();
 
-            }
             if(c=='+')
             {
-                tokens.add(String.valueOf(tokenBuilder));
+                tokens.add(tokenBuilder.reverse().toString());
                 tokenBuilder=new StringBuilder();
             }
-            tokenBuilder.append(c);
+            else if(c=='-')
+            {
+                tokens.add("-"+tokenBuilder.reverse().toString());
+                tokenBuilder=new StringBuilder();
+            }
+            else if(c!=' ')
+            {
+                tokenBuilder.append(c);
 
+            }
+
+
+        }
+        if(!tokenBuilder.isEmpty())
+        {
+            tokens.add(tokenBuilder.reverse().toString());
         }
         for(String token : tokens)
         {
-
+            System.out.println(token);
             monomials.add(new Monomial(token));
         }
     }

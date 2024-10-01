@@ -15,8 +15,8 @@ public class Monomial {
     }
     public Monomial(String string)
     {
-
-        Pattern realWithExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x\\^(\\d+\\.?\\d*)");
+        System.out.println(string);
+        Pattern realWithExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x\\^(-?\\d+\\.?\\d*)");
         Matcher rWEM = realWithExponent.matcher(string);
         if(rWEM.matches())
         {
@@ -55,8 +55,10 @@ public class Monomial {
         }
         Pattern realConstant = Pattern.compile("(-?\\d+\\.?\\d*)");
         Matcher rC = realWithoutExponent.matcher(string);
+
         if(rC.matches())
         {
+
             System.out.println(rC.group(0));
             if(rC.group(1)==null)
             {
@@ -91,6 +93,7 @@ public class Monomial {
             return;
 
         }
+        throw new RuntimeException("Doesn't Match");
     }
     public String toString()
     {
