@@ -11,4 +11,8 @@ public final class MathUtil {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public static boolean isOperator(String token) {
+        return "+-*/^".contains(token);
+    }
 }

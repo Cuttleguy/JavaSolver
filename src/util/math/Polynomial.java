@@ -6,15 +6,66 @@ import java.util.Map;
 
 public class Polynomial {
     ArrayList<Monomial> monomials;
+
     public Polynomial()
     {
         monomials=new ArrayList<>();
+    }
+    public Polynomial(Monomial monomial)
+    {
+        monomials=new ArrayList<>();
+        monomials.add(monomial);
     }
     public Polynomial(ArrayList<Monomial> polynomial)
     {
         monomials=polynomial;
     }
+    public Polynomial(String string)
+    {
+        monomials=new ArrayList<>();
+        ArrayList<String> tokens=new ArrayList<String>();
+        StringBuilder tokenBuilder= new StringBuilder();
+        for (int i = 0; i < string.length(); i++){
+            char c = string.charAt(i);
+            if(c=='-')
+            {
+                tokens.add("-"+tokenBuilder);
+                tokenBuilder=new StringBuilder();
 
+            }
+            if(c=='+')
+            {
+                tokens.add(String.valueOf(tokenBuilder));
+                tokenBuilder=new StringBuilder();
+            }
+            tokenBuilder.append(c);
+
+        }
+        for(String token : tokens)
+        {
+
+            monomials.add(new Monomial(token));
+        }
+    }
+    public String toString()
+    {
+        StringBuilder returnBuilder = new StringBuilder();
+        for(Monomial monomial:monomials)
+        {
+            if(monomial.coefficient.imag==0.0 && monomial.coefficient.real < 0.0)
+            {
+                returnBuilder.append(monomial);
+                returnBuilder=new StringBuilder();
+            }
+            else{
+                returnBuilder.append('+');
+                returnBuilder.append(monomial);
+                returnBuilder=new StringBuilder();
+            }
+        }
+        return returnBuilder.toString();
+
+    }
     public void Compress()
     {
         Map<Double, Complex> exponentToCoefficentMap= new HashMap<>();
@@ -59,6 +110,7 @@ public class Polynomial {
                 toReturn.monomials.add(monomial*otherMonomial);
             }
         }
+        toReturn.Compress();
         return toReturn;
     }
     public Polynomial div(Monomial other)
@@ -68,6 +120,7 @@ public class Polynomial {
         {
             toReturn.monomials.add(monomial/other);
         }
+        toReturn.Compress();
         return toReturn;
     }
     public double getDegree()
@@ -127,6 +180,7 @@ public class Polynomial {
             q+=t;
             r=r-other*t;
         }
+        q.Compress();
         return q;
 
     }
@@ -157,7 +211,8 @@ public class Polynomial {
             q+=t;
             r=r-other*t;
         }
-        return q;
+        r.Compress();
+        return r;
     }
 
     public Polynomial plus(Polynomial other)
@@ -167,10 +222,94 @@ public class Polynomial {
         toReturn.Compress();
         return toReturn;
     }
+    public double getConstant()
+    {
+
+        for(Monomial monomial:monomials)
+        {
+
+            if(monomial.exponent!=0.0)
+            {
+                throw new RuntimeException("You didn't Check");
+            }
+            if(monomial.coefficient.imag!=0.0)
+            {
+                throw new RuntimeException("You Didn't Check");
+            }
+            return monomial.coefficient.real;
+        }
+        throw new RuntimeException("Zero");
+
+    }
+    public boolean isRealConstant()
+    {
+        if(!isConstant()) return false;
+        for(Monomial monomial:monomials)
+        {
+
+            if(monomial.exponent!=0.0)
+            {
+                return false;
+            }
+            if(monomial.coefficient.imag!=0.0)
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+    public boolean isConstant()
+    {
+
+        for(Monomial monomial:monomials)
+        {
+
+            if(monomial.exponent!=0.0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public boolean divisible(Polynomial other)
     {
         return (this%other).isZero();
     }
+    public Polynomial gcf(Polynomial other)
+    {
+        Polynomial a = this;
+        Polynomial b = other;
+        if(a.isZero()) return b;
+        if(b.isZero()) return a;
+        while(!b.isZero())
+        {
+            Polynomial remainder = a % b;
+            a=b;
+            b=remainder;
+        }
+        return a;
+    }
+    public boolean equals(Polynomial other)
+    {
+
+        for(Monomial monomial:monomials)
+        {
+            if(other.coeffientAtDegree(monomial.exponent)!=monomial.coefficient)
+            {
+                return false;
+            }
+        }
+        for(Monomial monomial:other.monomials)
+        {
+            if(coeffientAtDegree(monomial.exponent)!=monomial.coefficient)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 
 

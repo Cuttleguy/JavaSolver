@@ -1,5 +1,6 @@
 package util.math;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,8 @@ public class Monomial {
     }
     public Monomial(String string)
     {
-        Pattern realWithExponent = Pattern.compile("(\\d+\\.?\\d*)?x\\^(\\d+\\.?\\d*)");
+
+        Pattern realWithExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x\\^(\\d+\\.?\\d*)");
         Matcher rWEM = realWithExponent.matcher(string);
         if(rWEM.matches())
         {
@@ -32,7 +34,7 @@ public class Monomial {
             return;
 
         }
-        Pattern realWithoutExponent = Pattern.compile("(\\d+\\.?\\d*)?x");
+        Pattern realWithoutExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x");
         Matcher rwEM = realWithoutExponent.matcher(string);
         if(rwEM.matches())
         {
@@ -51,7 +53,7 @@ public class Monomial {
             return;
 
         }
-        Pattern realConstant = Pattern.compile("(\\d+\\.?\\d*)?");
+        Pattern realConstant = Pattern.compile("(-?\\d+\\.?\\d*)");
         Matcher rC = realWithoutExponent.matcher(string);
         if(rC.matches())
         {
@@ -70,7 +72,7 @@ public class Monomial {
             return;
 
         }
-        Pattern imaginary = Pattern.compile("(\\d+\\.?\\d*)?i");
+        Pattern imaginary = Pattern.compile("(-?\\d+\\.?\\d*)?i");
         Matcher iM = realWithoutExponent.matcher(string);
         if(rwEM.matches())
         {
@@ -84,7 +86,7 @@ public class Monomial {
                 coefficient = new Complex(Double.parseDouble(iM.group(1)));
             }
 
-            exponent=1.0;
+            exponent=0.0;
 
             return;
 
@@ -121,6 +123,10 @@ public class Monomial {
     Monomial div(Monomial other)
     {
         return new Monomial(coefficient/other.coefficient,exponent-other.exponent);
+    }
+    public boolean equals(Monomial other)
+    {
+        return coefficient==other.coefficient&& Objects.equals(exponent, other.exponent);
     }
 
 
