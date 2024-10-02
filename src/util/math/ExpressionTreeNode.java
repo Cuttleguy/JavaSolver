@@ -48,34 +48,24 @@ public class ExpressionTreeNode {
     }
     public Rational eval()
     {
+
         if(left==null&&right==null)
         {
             System.out.println("A leaf");
+
             return new Rational(new Polynomial(value));
         }
         else
         {
             System.out.println("Not A leaf");
-            switch (value)
-            {
-                case "+":
-                    assert left != null;
-                    return left.eval()+right.eval();
-                case "-":
-                    assert left != null;
-                    return left.eval()-right.eval();
-                case "*":
-                    assert left != null;
-                    return left.eval()*right.eval();
-                case "/":
-                    assert left != null;
-                    return left.eval()/right.eval();
-                case "^":
-                    assert left != null;
-                    return Rational.pow(left.eval(),right.eval());
-                default:
-                    throw new RuntimeException("Not an Operator or Leaf");
-            }
+            return switch (value) {
+                case "+" -> left.eval() + right.eval();
+                case "-" -> left.eval() - right.eval();
+                case "*" -> left.eval() * right.eval();
+                case "/" -> left.eval() / right.eval();
+                case "^" -> Rational.pow(left.eval(), right.eval());
+                default -> throw new RuntimeException("Not an Operator or Leaf");
+            };
         }
 
     }

@@ -1,8 +1,6 @@
 package util.math;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Polynomial {
     ArrayList<Monomial> monomials;
@@ -22,7 +20,7 @@ public class Polynomial {
     }
     public Polynomial(String string)
     {
-        System.out.println("From String");
+
         monomials=new ArrayList<>();
         ArrayList<String> tokens=new ArrayList<>();
         StringBuilder tokenBuilder= new StringBuilder();
@@ -53,25 +51,27 @@ public class Polynomial {
         }
         for(String token : tokens)
         {
-            System.out.println(token);
+
             monomials.add(new Monomial(token));
         }
     }
     public String toString()
     {
+        order();
         StringBuilder returnBuilder = new StringBuilder();
+        int i = 0;
         for(Monomial monomial:monomials)
         {
-            if(monomial.coefficient.imag==0.0 && monomial.coefficient.real < 0.0)
+            if(monomial.coefficient.imag==0.0 && monomial.coefficient.real < 0.0 || i<=0)
             {
                 returnBuilder.append(monomial);
-                returnBuilder=new StringBuilder();
+
             }
             else{
                 returnBuilder.append('+');
                 returnBuilder.append(monomial);
-                returnBuilder=new StringBuilder();
             }
+            i++;
         }
         return returnBuilder.toString();
 
@@ -91,6 +91,7 @@ public class Polynomial {
                 exponentToCoefficentMap.put(monomial.exponent,monomial.coefficient);
             }
         }
+        monomials.clear();
         for(Map.Entry<Double, Complex> entry:exponentToCoefficentMap.entrySet())
         {
             monomials.add(new Monomial(entry.getValue(),entry.getKey()));
@@ -115,7 +116,7 @@ public class Polynomial {
         Polynomial toReturn = new Polynomial();
         for(Monomial monomial:monomials)
         {
-            for(Monomial otherMonomial:monomials)
+            for(Monomial otherMonomial:other.monomials)
             {
                 toReturn.monomials.add(monomial*otherMonomial);
             }
@@ -133,12 +134,43 @@ public class Polynomial {
         toReturn.Compress();
         return toReturn;
     }
+    public void order()
+    {
+        ArrayList<Double> exponents=new ArrayList<>();
+        for (Monomial monomial:monomials)
+        {
+            exponents.add(monomial.exponent);
+        }
+        Collections.sort(exponents);
+        Collections.reverse(exponents);
+        ArrayList<Monomial> newMonomials = new ArrayList<>();
+        for(double exponent:exponents)
+        {
+            newMonomials.add(new Monomial(coeffientAtDegree(exponent),exponent));
+        }
+        monomials=newMonomials;
+
+
+    }
     public double getDegree()
     {
         double degree=Double.NEGATIVE_INFINITY;
         for(Monomial monomial:monomials)
         {
-            if(degree<monomial.exponent)
+            if(degree<monomial.exponent && !Objects.equals(monomial.coefficient, new Complex(0.0)))
+            {
+                degree=monomial.exponent;
+
+            }
+        }
+        return degree;
+    }
+    public double getLowestExponent()
+    {
+        double degree=Double.POSITIVE_INFINITY;
+        for(Monomial monomial:monomials)
+        {
+            if(degree>monomial.exponent && !Objects.equals(monomial.coefficient, new Complex(0.0)))
             {
                 degree=monomial.exponent;
 
@@ -217,8 +249,8 @@ public class Polynomial {
         int counter=0;
         while(!r.isZero()&&r.getDegree()>=other.getDegree())
         {
-            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),0.0);
-            q+=t;
+            Polynomial t = new Polynomial(new Monomial(r.coeffientAtDegree(r.getDegree()),0.0));
+            q=q+t;
             r=r-other*t;
         }
         r.Compress();

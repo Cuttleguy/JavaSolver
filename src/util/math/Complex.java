@@ -87,19 +87,94 @@ public class Complex {
     public String toString(){
         if(imag == 0.0)
         {
-            return Double.toString(real);
+            if(real%1.0==0)
+            {
+
+                return Integer.toString(Math.round(Double.valueOf(real).floatValue()));
+            }
+            else
+            {
+                return Double.toString(real);
+            }
+
         } else if (real==0.0) {
-            return Double.toString(imag)+"i";
+            if(imag%1.0==0)
+            {
+
+                return Integer.toString(Math.round(Double.valueOf(imag).floatValue()))+"i";
+            }
+            else
+            {
+                return Double.toString(imag)+"i";
+            }
         } else if (imag==1.0) {
-            return Double.toString(real)+" + i";
+            if(real%1.0==0)
+            {
+
+                return Integer.toString(Math.round(Double.valueOf(real).floatValue()))+" + i";
+            }
+            else
+            {
+                return Double.toString(real)+" + i";
+            }
         }
         else if(imag==-1.0)
         {
-            return Double.toString(real)+" - i";
+            if(real%1.0==0)
+            {
+
+                return Integer.toString(Math.round(Double.valueOf(real).floatValue()))+" - i";
+            }
+            else
+            {
+                return Double.toString(real)+" - i";
+            }
         } else if (imag<0.0) {
-            return Double.toString(real)+" - "+Double.toString(Math.abs(imag))+"i";
+            String realStr;
+            if(real%1.0==0)
+            {
+
+                realStr= Integer.toString(Math.round(Double.valueOf(real).floatValue()));
+            }
+            else
+            {
+                realStr= Double.toString(real);
+            }
+            String imagStr;
+            if(imag%1.0==0)
+            {
+
+                imagStr= Integer.toString(Math.round(Double.valueOf(Math.abs(imag)).floatValue()));
+            }
+            else
+            {
+                imagStr= Double.toString(Math.abs(imag));
+            }
+
+            return realStr+" - "+imagStr+"i";
         } else {
-            return Double.toString(real)+" + "+Double.toString(imag)+"i";
+            String realStr;
+            if(real%1.0==0)
+            {
+
+                realStr= Integer.toString(Math.round(Double.valueOf(real).floatValue()));
+            }
+            else
+            {
+                realStr= Double.toString(real);
+            }
+            String imagStr;
+            if(real%1.0==0)
+            {
+
+                imagStr= Integer.toString(Math.round(Double.valueOf(imag).floatValue()));
+            }
+            else
+            {
+                imagStr= Double.toString(imag);
+            }
+
+            return realStr+" + "+imagStr+"i";
         }
 
     }

@@ -47,6 +47,10 @@ public class Rational {
         }
         return true;
     }
+    public String toString()
+    {
+        return numerator.toString()+"/"+denominator.toString();
+    }
 
     public static Rational pow(Rational a, Rational b)
     {

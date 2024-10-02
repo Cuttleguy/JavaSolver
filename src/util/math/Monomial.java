@@ -15,12 +15,12 @@ public class Monomial {
     }
     public Monomial(String string)
     {
-        System.out.println(string);
+
         Pattern realWithExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x\\^(-?\\d+\\.?\\d*)");
         Matcher rWEM = realWithExponent.matcher(string);
         if(rWEM.matches())
         {
-            System.out.println(rWEM.group(0));
+
             if(rWEM.group(1)==null)
             {
                 coefficient=new Complex(1.0);
@@ -38,7 +38,7 @@ public class Monomial {
         Matcher rwEM = realWithoutExponent.matcher(string);
         if(rwEM.matches())
         {
-            System.out.println(rwEM.group(0));
+
             if(rwEM.group(1)==null)
             {
                 coefficient=new Complex(1.0);
@@ -53,13 +53,28 @@ public class Monomial {
             return;
 
         }
+        Pattern negativerealWithExponent = Pattern.compile("-x\\^(-?\\d+\\.?\\d*)");
+        Matcher nrWEM = negativerealWithExponent.matcher(string);
+        if(nrWEM.matches())
+        {
+
+            coefficient=new Complex(-1);
+            exponent=Double.parseDouble(nrWEM.group());
+        }
+
+        if(string.equals("-x"))
+        {
+            coefficient=new Complex(-1);
+            exponent=1.0;
+            return;
+        }
         Pattern realConstant = Pattern.compile("(-?\\d+\\.?\\d*)");
-        Matcher rC = realWithoutExponent.matcher(string);
+        Matcher rC = realConstant.matcher(string);
 
         if(rC.matches())
         {
 
-            System.out.println(rC.group(0));
+
             if(rC.group(1)==null)
             {
                 coefficient=new Complex(1.0);
@@ -78,7 +93,7 @@ public class Monomial {
         Matcher iM = realWithoutExponent.matcher(string);
         if(rwEM.matches())
         {
-            System.out.println(iM.group(0));
+
             if(iM.group(1)==null)
             {
                 coefficient=new Complex(1.0);
@@ -98,14 +113,30 @@ public class Monomial {
     public String toString()
     {
         String coefficientStr;
-        if(coefficient.real==0.0 || coefficient.imag==0.0)
+        if(coefficient.equals(new Complex(1)))
+        {
+            coefficientStr="";
+        }
+        else if(coefficient.equals(new Complex(-1)))
+        {
+            coefficientStr="-";
+        }
+        else if(coefficient.real==0.0 || coefficient.imag==0.0)
         {
             coefficientStr=coefficient.toString();
-        }
-        else {
+        } else {
             coefficientStr="("+coefficient.toString()+")";
         }
-        String exponentStr=exponent.toString();
+        String exponentStr;
+        if(exponent%1==0)
+        {
+            exponentStr=Integer.valueOf(exponent.intValue()).toString();
+        }
+        else
+        {
+            exponentStr=exponent.toString();
+        }
+
         if(exponent==0.0)
         {
             return coefficientStr;
