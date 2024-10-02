@@ -13,10 +13,12 @@ public class Polynomial {
     {
         monomials=new ArrayList<>();
         monomials.add(monomial);
+        Compress();
     }
     public Polynomial(ArrayList<Monomial> polynomial)
     {
         monomials=polynomial;
+        Compress();
     }
     public Polynomial(String string)
     {
@@ -54,6 +56,7 @@ public class Polynomial {
 
             monomials.add(new Monomial(token));
         }
+        Compress();
     }
     public String toString()
     {
@@ -157,7 +160,7 @@ public class Polynomial {
         double degree=Double.NEGATIVE_INFINITY;
         for(Monomial monomial:monomials)
         {
-            if(degree<monomial.exponent && !Objects.equals(monomial.coefficient, new Complex(0.0)))
+            if(degree<monomial.exponent &&!monomial.coefficient.equals(new Complex(0.0)))
             {
                 degree=monomial.exponent;
 
@@ -170,7 +173,7 @@ public class Polynomial {
         double degree=Double.POSITIVE_INFINITY;
         for(Monomial monomial:monomials)
         {
-            if(degree>monomial.exponent && !Objects.equals(monomial.coefficient, new Complex(0.0)))
+            if(degree>monomial.exponent && monomial.coefficient.equals(new Complex(0.0)))
             {
                 degree=monomial.exponent;
 
@@ -194,6 +197,8 @@ public class Polynomial {
                 exponentToCoefficentMap.put(monomial.exponent,monomial.coefficient);
             }
         }
+        System.out.println(exponentToCoefficentMap);
+        System.out.println(exponent);
         return exponentToCoefficentMap.get(exponent);
     }
     public boolean isZero()
@@ -202,8 +207,9 @@ public class Polynomial {
         for(Monomial monomial:monomials)
         {
 
-            if(monomial.coefficient!=zero)
+            if(!monomial.coefficient.equals(zero))
             {
+
                 return false;
             }
         }
@@ -249,8 +255,12 @@ public class Polynomial {
         int counter=0;
         while(!r.isZero()&&r.getDegree()>=other.getDegree())
         {
-            Polynomial t = new Polynomial(new Monomial(r.coeffientAtDegree(r.getDegree()),0.0));
+            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),0.0);
+            System.out.println(t);
+            System.out.println(q);
+            System.out.println(r);
             q=q+t;
+
             r=r-other*t;
         }
         r.Compress();
@@ -318,17 +328,20 @@ public class Polynomial {
     {
         return (this%other).isZero();
     }
+    // GCF of two polynomials
     public Polynomial gcf(Polynomial other)
     {
         Polynomial a = this;
         Polynomial b = other;
         if(a.isZero()) return b;
         if(b.isZero()) return a;
-        while(!b.isZero())
+        int i=0;
+        while(!b.isZero()&& i < 32)
         {
             Polynomial remainder = a % b;
             a=b;
             b=remainder;
+            i++;
         }
         return a;
     }
