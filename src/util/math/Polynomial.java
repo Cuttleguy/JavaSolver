@@ -2,22 +2,28 @@ package util.math;
 
 import java.util.*;
 
-public class Polynomial {
-    ArrayList<Monomial> monomials;
 
+
+public class Polynomial {
+    public ArrayList<Monomial> monomials;
+    public static final Polynomial one = new Polynomial(new Monomial(Complex.one));
     public Polynomial()
     {
         monomials=new ArrayList<>();
     }
+
     public Polynomial(Monomial monomial)
     {
-        monomials=new ArrayList<>();
-        monomials.add(monomial);
-        Compress();
+        ArrayList<Monomial> monos=new ArrayList<>();
+        monos.add(monomial);
+
+        monomials=monos;
     }
     public Polynomial(ArrayList<Monomial> polynomial)
     {
-        monomials=polynomial;
+        monomials=new ArrayList<>();
+        monomials.addAll(polynomial);
+
         Compress();
     }
     public Polynomial(String string)
@@ -81,7 +87,7 @@ public class Polynomial {
     }
     public void Compress()
     {
-        Map<Double, Complex> exponentToCoefficentMap= new HashMap<>();
+        Map<Integer, Complex> exponentToCoefficentMap= new HashMap<>();
         for(Monomial monomial : monomials)
         {
             if(exponentToCoefficentMap.containsKey(monomial.exponent))
@@ -95,7 +101,7 @@ public class Polynomial {
             }
         }
         monomials.clear();
-        for(Map.Entry<Double, Complex> entry:exponentToCoefficentMap.entrySet())
+        for(Map.Entry<Integer, Complex> entry:exponentToCoefficentMap.entrySet())
         {
             monomials.add(new Monomial(entry.getValue(),entry.getKey()));
         }
@@ -139,7 +145,7 @@ public class Polynomial {
     }
     public void order()
     {
-        ArrayList<Double> exponents=new ArrayList<>();
+        ArrayList<Integer> exponents=new ArrayList<>();
         for (Monomial monomial:monomials)
         {
             exponents.add(monomial.exponent);
@@ -147,7 +153,7 @@ public class Polynomial {
         Collections.sort(exponents);
         Collections.reverse(exponents);
         ArrayList<Monomial> newMonomials = new ArrayList<>();
-        for(double exponent:exponents)
+        for(int exponent:exponents)
         {
             newMonomials.add(new Monomial(coeffientAtDegree(exponent),exponent));
         }
@@ -155,22 +161,27 @@ public class Polynomial {
 
 
     }
-    public double getDegree()
+    public Integer getDegree()
     {
-        double degree=Double.NEGATIVE_INFINITY;
+        int degree=monomials[0].exponent;
         for(Monomial monomial:monomials)
         {
-            if(degree<monomial.exponent &&!monomial.coefficient.equals(new Complex(0.0)))
+            if(degree<monomial.exponent &&monomial.coefficient!=Complex.zero)
             {
                 degree=monomial.exponent;
 
             }
+
+        }
+        if(degree==-999999999)
+        {
+            throw new RuntimeException("ZERO");
         }
         return degree;
     }
-    public double getLowestExponent()
+    public Integer getLowestExponent()
     {
-        double degree=Double.POSITIVE_INFINITY;
+        Integer degree=999999999;
         for(Monomial monomial:monomials)
         {
             if(degree>monomial.exponent && monomial.coefficient.equals(new Complex(0.0)))
@@ -181,9 +192,9 @@ public class Polynomial {
         }
         return degree;
     }
-    public Complex coeffientAtDegree(Double exponent)
+    public Complex coeffientAtDegree(Integer exponent)
     {
-        Map<Double, Complex> exponentToCoefficentMap= new HashMap<>();
+        Map<Integer, Complex> exponentToCoefficentMap= new HashMap<>();
         for(Monomial monomial : monomials)
         {
             if(exponentToCoefficentMap.containsKey(monomial.exponent))
@@ -197,17 +208,15 @@ public class Polynomial {
                 exponentToCoefficentMap.put(monomial.exponent,monomial.coefficient);
             }
         }
-        System.out.println(exponentToCoefficentMap);
-        System.out.println(exponent);
-        return exponentToCoefficentMap.get(exponent);
+        return exponentToCoefficentMap.getOrDefault(exponent, Complex.zero);
     }
     public boolean isZero()
     {
-        Complex zero = new Complex(0.0);
+
         for(Monomial monomial:monomials)
         {
 
-            if(!monomial.coefficient.equals(zero))
+            if(!monomial.coefficient.equals(Complex.zero))
             {
 
                 return false;
@@ -218,19 +227,31 @@ public class Polynomial {
 
     public Polynomial div(Polynomial other)
     {
-        if(false){throw new ArithmeticException("Divided by zero");}
+        if(other.isZero()){throw new ArithmeticException("Divided by zero");}
         Polynomial q = new Polynomial();
-        Polynomial r=this;
+        Polynomial r=this.DeepCopy();
         int counter=0;
-        while(!r.isZero())
+        while(!r.isZero()&&counter<32)
         {
-            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),0.0);
+            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),r.getDegree())/new Monomial(other.coeffientAtDegree(other.getDegree()),other.getDegree());
+
             q+=t;
             r=r-other*t;
+            counter++;
         }
+
         q.Compress();
         return q;
 
+    }
+    public List<Complex> coefficients()
+    {
+        List<Complex> toReturn = new ArrayList<>();
+        for(Monomial monomial : monomials)
+        {
+            toReturn.add(monomial.coefficient);
+        }
+        return toReturn;
     }
     public Polynomial times(Monomial other)
     {
@@ -251,14 +272,12 @@ public class Polynomial {
     {
         if(false){throw new ArithmeticException("Divided by zero");}
         Polynomial q = new Polynomial();
-        Polynomial r=this;
+        Polynomial r=this.DeepCopy();
         int counter=0;
         while(!r.isZero()&&r.getDegree()>=other.getDegree())
         {
-            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),0.0);
-            System.out.println(t);
-            System.out.println(q);
-            System.out.println(r);
+            Monomial t = new Monomial(r.coeffientAtDegree(r.getDegree()),r.getDegree())/new Monomial(other.coeffientAtDegree(other.getDegree()),other.getDegree());
+
             q=q+t;
 
             r=r-other*t;
@@ -329,20 +348,35 @@ public class Polynomial {
         return (this%other).isZero();
     }
     // GCF of two polynomials
-    public Polynomial gcf(Polynomial other)
+    public Complex plugIn(Complex x)
     {
-        Polynomial a = this;
-        Polynomial b = other;
+        if(x==Complex.zero)
+        {
+            return Complex.zero;
+        }
+        Complex result=Complex.zero;
+        for(Monomial monomial:monomials)
+        {
+            result+=monomial.coefficient*Complex.pow(x,new Complex(monomial.exponent));
+        }
+        return result;
+    }
+    public static Polynomial gcf(Polynomial input,Polynomial other)
+    {
+        Polynomial a = input.DeepCopy();
+        Polynomial b = other.DeepCopy();
         if(a.isZero()) return b;
         if(b.isZero()) return a;
         int i=0;
         while(!b.isZero()&& i < 32)
         {
+
             Polynomial remainder = a % b;
             a=b;
             b=remainder;
             i++;
         }
+        a.Compress();
         return a;
     }
     public boolean equals(Polynomial other)
@@ -365,7 +399,55 @@ public class Polynomial {
         return true;
     }
 
+    public Polynomial DeepCopy()
+    {
+        return new Polynomial(this.monomials);
+    }
 
+    public Polynomial derivative()
+    {
+        Polynomial toReturn=new Polynomial();
+        for(Monomial monomial:monomials)
+        {
+            toReturn+=monomial.derivative();
+
+        }
+        return toReturn;
+    }
+    public List<Complex> solve()
+    {
+        List<Complex> roots = new ArrayList<>();
+        Polynomial copy=this.DeepCopy();
+        if(copy.getLowestExponent()<0)
+        {
+            copy*=new Monomial(Complex.one,-copy.getLowestExponent());
+
+        }
+
+        if(copy.getDegree()==1)
+        {
+            roots.addAll(MathUtil.solveLinear(copy.coeffientAtDegree(1),copy.coeffientAtDegree(0)));
+        } else if (copy.getDegree()==2) {
+            roots.addAll(MathUtil.solveQuadratic(copy.coeffientAtDegree(2),copy.coeffientAtDegree(1),copy.coeffientAtDegree(0)));
+
+        } else if (copy.getDegree()==3) {
+            roots.addAll(MathUtil.solveCubic(copy.coeffientAtDegree(3),copy.coeffientAtDegree(2),copy.coeffientAtDegree(1),copy.coeffientAtDegree(0)));
+        } else if (copy.getDegree()==4) {
+            roots.addAll(MathUtil.solveQuartic(copy.coeffientAtDegree(4),copy.coeffientAtDegree(3),copy.coeffientAtDegree(2),copy.coeffientAtDegree(1),copy.coeffientAtDegree(0)));
+        }
+        else
+        {
+
+            Complex root = MathUtil.newtonMethod(this,0.00000001,new Complex(205,22));
+            roots.add(root);
+            Polynomial toDivide = new Polynomial("x");
+            toDivide-=new Polynomial(new Monomial(root));
+            Polynomial extra = this/toDivide;
+            roots.addAll(extra.solve());
+        }
+        return roots;
+
+    }
 
 
 }

@@ -6,118 +6,110 @@ import java.util.regex.Pattern;
 
 public class Monomial {
     public Complex coefficient;
-    public Double exponent;
+    public Integer exponent;
 
-    public Monomial(Complex newCoefficient, Double newExponent)
+    public Monomial(Complex newCoefficient, Integer newExponent)
     {
         coefficient=newCoefficient;
         exponent=newExponent;
     }
+    public Monomial(Complex newCoefficient)
+    {
+        coefficient=newCoefficient;
+        exponent=0;
+    }
     public Monomial(String string)
     {
+        try {
+            Pattern realWithExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x\\^(-?\\d+)");
+            Matcher rWEM = realWithExponent.matcher(string);
+            if (rWEM.matches()) {
 
-        Pattern realWithExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x\\^(-?\\d+\\.?\\d*)");
-        Matcher rWEM = realWithExponent.matcher(string);
-        if(rWEM.matches())
-        {
+                if (rWEM.group(1) == null) {
+                    coefficient = new Complex(1.0);
+                } else {
+                    coefficient = new Complex(Double.parseDouble(rWEM.group(1)));
+                }
 
-            if(rWEM.group(1)==null)
-            {
-                coefficient=new Complex(1.0);
+                exponent = Integer.parseInt(rWEM.group(2));
+                return;
+
             }
-            else
-            {
-                coefficient = new Complex(Double.parseDouble(rWEM.group(1)));
+            Pattern realWithoutExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x");
+            Matcher rwEM = realWithoutExponent.matcher(string);
+            if (rwEM.matches()) {
+
+                if (rwEM.group(1) == null) {
+                    coefficient = new Complex(1.0);
+                } else {
+                    coefficient = new Complex(Double.parseDouble(rwEM.group(1)));
+                }
+
+                exponent = 1;
+
+                return;
+
+            }
+            Pattern negativerealWithExponent = Pattern.compile("-x\\^(-?\\d+)");
+            Matcher nrWEM = negativerealWithExponent.matcher(string);
+            if (nrWEM.matches()) {
+
+                coefficient = new Complex(-1);
+                exponent = Integer.parseInt(nrWEM.group());
             }
 
-            exponent=Double.parseDouble(rWEM.group(2));
-            return;
+            if (string.equals("-x")) {
+                coefficient = new Complex(-1);
+                exponent = 1;
+                return;
+            }
+            Pattern realConstant = Pattern.compile("(-?\\d+\\.?\\d*)");
+            Matcher rC = realConstant.matcher(string);
 
+            if (rC.matches()) {
+
+
+                if (rC.group(1) == null) {
+                    coefficient = new Complex(1.0);
+                } else {
+                    coefficient = new Complex(Double.parseDouble(rC.group(1)));
+                }
+
+                exponent = 0;
+
+                return;
+
+            }
+            Pattern imaginary = Pattern.compile("(-?\\d+\\.?\\d*)?i");
+            Matcher iM = imaginary.matcher(string);
+            if (rwEM.matches()) {
+
+                if (iM.group(1) == null) {
+                    coefficient = new Complex(1.0);
+                } else {
+                    coefficient = new Complex(Double.parseDouble(iM.group(1)));
+                }
+
+                exponent = 0;
+
+                return;
+
+            }
+            throw new RuntimeException(string+" doesn't match");
         }
-        Pattern realWithoutExponent = Pattern.compile("(-?\\d+\\.?\\d*)?x");
-        Matcher rwEM = realWithoutExponent.matcher(string);
-        if(rwEM.matches())
+        catch (IllegalStateException | NumberFormatException e)
         {
-
-            if(rwEM.group(1)==null)
-            {
-                coefficient=new Complex(1.0);
-            }
-            else
-            {
-                coefficient = new Complex(Double.parseDouble(rWEM.group(1)));
-            }
-
-            exponent=1.0;
-
-            return;
-
+            throw new RuntimeException(e+"\n"+string);
         }
-        Pattern negativerealWithExponent = Pattern.compile("-x\\^(-?\\d+\\.?\\d*)");
-        Matcher nrWEM = negativerealWithExponent.matcher(string);
-        if(nrWEM.matches())
-        {
-
-            coefficient=new Complex(-1);
-            exponent=Double.parseDouble(nrWEM.group());
-        }
-
-        if(string.equals("-x"))
-        {
-            coefficient=new Complex(-1);
-            exponent=1.0;
-            return;
-        }
-        Pattern realConstant = Pattern.compile("(-?\\d+\\.?\\d*)");
-        Matcher rC = realConstant.matcher(string);
-
-        if(rC.matches())
-        {
-
-
-            if(rC.group(1)==null)
-            {
-                coefficient=new Complex(1.0);
-            }
-            else
-            {
-                coefficient = new Complex(Double.parseDouble(rC.group(1)));
-            }
-
-            exponent=0.0;
-
-            return;
-
-        }
-        Pattern imaginary = Pattern.compile("(-?\\d+\\.?\\d*)?i");
-        Matcher iM = realWithoutExponent.matcher(string);
-        if(rwEM.matches())
-        {
-
-            if(iM.group(1)==null)
-            {
-                coefficient=new Complex(1.0);
-            }
-            else
-            {
-                coefficient = new Complex(Double.parseDouble(iM.group(1)));
-            }
-
-            exponent=0.0;
-
-            return;
-
-        }
-        throw new RuntimeException("Doesn't Match");
     }
     public String toString()
     {
         String coefficientStr;
-        if(coefficient.equals(new Complex(1)))
+        if(coefficient.equals(new Complex(1)) && exponent != 0)
         {
             coefficientStr="";
         }
-        else if(coefficient.equals(new Complex(-1)))
+        else if(coefficient.equals(new Complex(-1))&&exponent!=0)
         {
             coefficientStr="-";
         }
@@ -128,14 +120,7 @@ public class Monomial {
             coefficientStr="("+coefficient.toString()+")";
         }
         String exponentStr;
-        if(exponent%1==0)
-        {
-            exponentStr=Integer.valueOf(exponent.intValue()).toString();
-        }
-        else
-        {
-            exponentStr=exponent.toString();
-        }
+        exponentStr=exponent.toString();
 
         if(exponent==0.0)
         {
@@ -162,6 +147,9 @@ public class Monomial {
     {
         return coefficient==other.coefficient&& Objects.equals(exponent, other.exponent);
     }
-
+    public Monomial derivative()
+    {
+        return new Monomial(coefficient*exponent,exponent-1);
+    }
 
 }

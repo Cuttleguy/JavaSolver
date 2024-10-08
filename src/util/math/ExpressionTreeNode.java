@@ -46,18 +46,33 @@ public class ExpressionTreeNode {
         }
         return toReturn;
     }
+    public String toString()
+    {
+        if(this.left==null && this.right==null)
+        {
+            return this.value;
+        }
+        else
+        {
+            return "("+left.toString()+")"+this.value+"("+right.toString()+")";
+        }
+
+    }
+
     public Rational eval()
     {
 
-        if(left==null&&right==null)
+        if(left==null||right==null)
         {
-            System.out.println("A leaf");
+
 
             return new Rational(new Polynomial(value));
         }
         else
         {
-            System.out.println("Not A leaf");
+
+
+
             return switch (value) {
                 case "+" -> left.eval() + right.eval();
                 case "-" -> left.eval() - right.eval();
@@ -66,6 +81,7 @@ public class ExpressionTreeNode {
                 case "^" -> Rational.pow(left.eval(), right.eval());
                 default -> throw new RuntimeException("Not an Operator or Leaf");
             };
+
         }
 
     }

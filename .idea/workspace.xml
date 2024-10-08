@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="63fc2270-0094-44c7-a06f-c2353b0e867a" name="Changes" comment="Reading Fail">
+    <list default="true" id="63fc2270-0094-44c7-a06f-c2353b0e867a" name="Changes" comment="Mainly Working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/Complex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Complex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/ExpressionTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/ExpressionTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/ExpressionTreeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/ExpressionTreeNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/MathUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/MathUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/Monomial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Monomial.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/math/Polynomial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Polynomial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/Rational.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/math/Rational.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/math/RationalSum.java" beforeDir="false" />
     </list>
     <list id="92716c5c-991f-4859-a916-9a6bfb243ca1" name="Don't COmmit" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +41,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Cuttleguy/JavaSolver.git&quot;,
-    &quot;accountId&quot;: &quot;1f4b0074-d79b-4111-87e8-0ebb8419820c&quot;
+    &quot;accountId&quot;: &quot;c63f9c68-41a7-446f-9675-f9cddf01d7a8&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -118,6 +125,7 @@
     <MESSAGE value="Quaternions Start" />
     <MESSAGE value="9/30 Rationals" />
     <MESSAGE value="Reading Fail" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reading Fail" />
+    <MESSAGE value="Mainly Working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mainly Working" />
   </component>
 </project>
