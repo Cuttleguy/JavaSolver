@@ -95,6 +95,17 @@ public class Monomial {
                 return;
 
             }
+            if(string.equals("i"))
+            {
+                coefficient=Complex.i;
+                exponent=0;
+                return;
+            } else if (string.equals("-i")) {
+                coefficient = -Complex.i;
+                exponent=0;
+                return;
+            }
+
             throw new RuntimeException(string+" doesn't match");
         }
         catch (IllegalStateException | NumberFormatException e)

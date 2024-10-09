@@ -246,9 +246,13 @@ public final class MathUtil {
             char c1 = string[i];
             char c2 = string[i+1];
             toReturn.append(c1);
-            if(!isOperator(String.valueOf(c1)) && !isOperator(String.valueOf(c2)))
+            if(!isOperator(String.valueOf(c1)) && !isOperator(String.valueOf(c2)) && c1!=' ' && c2 !=' ')
             {
-                if(c1==')'||c2=='(')
+                if(c1=='i'||c2=='i')
+                {
+                    toReturn.append('*');
+                }
+                else if(c1==')'||c2=='(')
                 {
                     toReturn.append('*');
                 } else if (Character.isDigit(c1)^Character.isDigit(c2) && c1!='(' && c2 != ')') {
