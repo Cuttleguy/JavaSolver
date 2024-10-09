@@ -148,7 +148,15 @@ public class Complex implements ComparableUsing<Complex> {
             }
 
         } else if (real==0.0) {
-            if(imag%1.0==0)
+            if (imag==1.0)
+            {
+                return "i";
+            }
+            else if (imag == -1)
+            {
+                return "-i";
+            }
+            else if(imag%1.0==0)
             {
 
                 return Integer.toString(Math.round(Double.valueOf(imag).floatValue()))+"i";
@@ -191,7 +199,12 @@ public class Complex implements ComparableUsing<Complex> {
                 realStr= Double.toString(real);
             }
             String imagStr;
-            if(imag%1.0==0)
+            if(imag==1.0)
+            {
+                imagStr = "";
+            } else if (imag==-1.0) {
+                imagStr = "-";
+            } else if(imag%1.0==0)
             {
 
                 imagStr= Integer.toString(Math.round(Double.valueOf(Math.abs(imag)).floatValue()));

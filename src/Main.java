@@ -1,5 +1,6 @@
 import util.math.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,23 +31,44 @@ public class Main {
             simp1=root1.eval();
         }
         Rational simp2;
-        if(MathUtil.isPolynomialParsable(sides[1]))
-            simp2=new Rational(new Polynomial(sides[1]));
+        if(sides.length>1) {
+
+
+
+            if (MathUtil.isPolynomialParsable(sides[1]))
+                simp2 = new Rational(new Polynomial(sides[1]));
+            else {
+                String postfix2 = InfixToPostfix.infixToPostfix(MathUtil.addMull(sides[1]));
+
+                ExpressionTreeNode root2 = ExpressionTree.buildTree(postfix2);
+
+                simp2 = root2.eval();
+
+            }
+        }
         else
         {
-            String postfix2 = InfixToPostfix.infixToPostfix(MathUtil.addMull(sides[1]));
-
-            ExpressionTreeNode root2 = ExpressionTree.buildTree(postfix2);
-
-            simp2=root2.eval();
-
+            simp2=new Rational(new Polynomial("0"));
         }
 
 
         Rational oneSide= simp1-simp2;
         System.out.println("Simplified Equation: "+oneSide+" = 0");
         List<Complex> roots = oneSide.solve();
+        roots.sort(new Comparator<Complex>() {
+            @Override
+            public int compare(Complex o1, Complex o2) {
+                if(o1>o2)
+                {
+                    return 1;
+                } else if (o1==o2) {
+                    return 0;
+                } else{
+                    return -1;
 
+                }
+            }
+        });
         for(Complex root : roots)
         {
             System.out.println("Root: "+root);

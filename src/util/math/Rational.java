@@ -73,7 +73,7 @@ public class Rational {
     }
     public String toString()
     {
-        return numerator.toString()+"/"+denominator.toString();
+        return "("+numerator.toString()+") / ("+denominator.toString()+")";
     }
 
     public static Rational pow(Rational a, Rational b)
