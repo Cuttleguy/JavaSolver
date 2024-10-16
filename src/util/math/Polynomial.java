@@ -423,7 +423,13 @@ public class Polynomial {
             copy*=new Monomial(Complex.one,-copy.getLowestExponent());
 
         }
-        if(copy.getDegree()==0)
+        if(copy.coeffientAtDegree(0)==Complex.zero)
+        {
+            Polynomial reduced = this/(new Monomial("x"));
+            roots.addAll(reduced.solve());
+            roots.add(Complex.zero);
+        }
+        else if(copy.getDegree()==0)
         {
             roots.addAll(MathUtil.solveLinear(Complex.zero,copy.coeffientAtDegree(0)));
         }
